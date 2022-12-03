@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <!-- Refer to https://docs.liquibase.com/change-types/community/create-table.html -->
+
+    <changeSet id="b55d9d91-2d6f-48f6-9442-8f654a0aba47" author="juan_esteban.caicedo" failOnError="true">
+        <createTable tableName="role_permission">
+            <column name="role_id" type="UUID" >
+                <constraints primaryKey="true" nullable="false" references="roles(role_id)" foreignKeyName="fk-role-permission-role"/>
+            </column>
+            <column name="permission_id" type="UUID" >
+                <constraints primaryKey="true" nullable="false" references="permissions(permission_id)" foreignKeyName="fk-role-permission-permission"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

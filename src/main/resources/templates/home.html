@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--link th:href="@{/image/icon.ico}" rel="icon" type="image/icon type"-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+</head>
+<body>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<div class="body-wrapper">
+    <nav class="navbar navbar-expand">
+        <div class="container">
+            <a class="navbar-brand" href="./home" style="color: white">Computer Store</a>
+            <div class="navbar-nav">
+                <a class="nav-link" href="./home" style="color: white">Home</a>
+                <a class="nav-link" href="./getUsers" style="color: white" th:if="${role.equals('Admin')}">Users</a>
+                <a class="nav-link" href="./getOrders" style="color: white">Orders</a>
+                <a class="nav-link" href="./getCart" style="color: white" th:if="${!role.equals('Admin')}">Cart</a>
+                <a>&nbsp;</a>
+                <button onclick="window.location.href='/createNewItem'" th:class="'btn btn-success'" th:if="${role.equals('Admin')}">Create Item</button>
+                <a th:if="${role.equals('Admin')}">&nbsp;&nbsp;&nbsp;</a>
+                <button onclick="window.location.href='/logout'" th:class="'btn btn-danger'">Logout</button>
+            </div>
+        </div>
+    </nav>
+    <section class="d-flex justify-content-center align-items-center bg" th:each="item, i: ${items}">
+        <div hidden>
+            <input type="hidden" class="size" th:value="${i.size}"/>
+        </div>
+        <div class="card menu">
+            <div class="d-flex flex-column p-3">
+                <h2 class="card-title main" th:text="${item.name}"></h2>
+                <div class="menu__container">
+                    <div class="container">
+                        <form th:action="@{/addCartItem}" th:method="post" th:class="'home-'+${i.count}">
+                            <input type="hidden" th:name="name" th:value="${item.name}"/>
+                            <input type="hidden" th:name="id" th:value="${item.id}"/>
+                            <input type="hidden" th:name="urlImage" th:value="${item.urlImage}"/>
+                            <div>
+                                <img th:src="${item.urlImage}" alt="Item Image" width="250" height="250">
+                            </div>
+                            <div class="form-group p-2">
+                                <label for="description" class="label">Description</label>
+                                <input type="text" id="description" class="form-control description" aria-label="Username" th:name="description" th:value="${item.description}" readonly/>
+                            </div>
+                            <div class="form-group p-2">
+                                <label for="price" class="label">Price</label>
+                                <input type="number" id="price" class="form-control price" aria-label="Username" th:name="price" th:value="${item.price}" readonly>
+                            </div>
+                            <div class="form-group p-2" th:if="${!role.equals('Admin')}">
+                                <label for="quantity" class="label">Quantity</label>
+                                <input type="number" id="quantity" th:class="'form-control quantity-'+${i.count}" aria-label="Username" th:name="quantity" th:value="${item.quantity}">
+                                <div th:class="'errorsp invalidQuantity-' +${i.count} + ' hidden'"></div>
+                            </div>
+                            <br>
+                            <div class="d-grid gap-2" th:if="${!role.equals('Admin')}">
+                                <span class="d-grid gap-2 toolTipSubmit" tabindex="0" data-bs-toggle="tooltip" title="The button will be activated when the form is filled out correctly.">
+                                    <button type="submit" th:class="'btn btn-primary btn-block add-'+${i.count}" disabled>Add</button>
+                                </span>
+                            </div>
+                            <div class="d-grid gap-2" th:if="${role.equals('Admin')}">
+                                <button type="button" th:attr="onclick=|modifyItem('${item.id}')|" th:class="'btn btn-primary'">Modify Item</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script type="text/javascript" th:src="@{/js/error.js}" th:if="${!role.equals('Admin')}"></script>
+<script type="text/javascript" th:src="@{/js/home.js}" th:if="${!role.equals('Admin')}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script th:if="${!role.equals('Admin')}">
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map(
+        function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        }
+    )
+</script>
+<script th:if="${role.equals('Admin')}">
+    function modifyItem(itemId) {
+        window.location.href = '/modifyItem?itemId=' + itemId;
+    }
+</script>
+</body>
+</html>

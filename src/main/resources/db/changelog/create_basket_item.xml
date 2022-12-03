@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <!-- Refer to https://docs.liquibase.com/change-types/community/create-table.html -->
+
+    <changeSet id="3de7ee6e-1adf-484d-b330-a355ed84a1a2" author="juan_fernando.martinez" failOnError="true">
+        <createTable tableName="basket_items">
+            <column name="basket_item_id" type="UUID">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="quantity" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_id" type="UUID">
+                <constraints nullable="false" references="items(item_id)" foreignKeyName="fk-item"/>
+            </column>
+            <column name="basket_id" type="UUID">
+                <constraints nullable="false" references="baskets(basket_id)" foreignKeyName="fk-basket"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

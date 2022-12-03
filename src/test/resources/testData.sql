@@ -1,0 +1,1 @@
+INSERT INTO "ITEMS" (name, description, price, url_image) VALUES ('Mini PC', 'A mini pc', 1000, 'https://www.img2link.com/images/2022/12/01/aaf04b258acfc1bf50e03b699b611fa7.jpg');

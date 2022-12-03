@@ -1,0 +1,138 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #F5F5F5;
+}
+
+footer{
+  background-color: #0F284C;
+  color:white;
+  -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.25);
+}
+
+footer h6{
+	margin-top: 2rem;
+}
+footer .row{
+	padding-top: 2rem;
+}
+footer a{
+	color:white;
+}
+footer .col{	
+	font-size: 14px;
+	text-align: center;
+    height: 22rem;
+    margin-left: 12rem;
+    margin-right: 12rem;
+}
+   
+
+.body-wrapper {
+  width: 100%;
+}
+
+.logo__img {
+  width: 120px;
+}
+
+.navbar {
+  height: 70px;
+  background-color: #0060aa;
+  -webkit-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+          box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+}
+
+.btn-primary {
+  background-color: #00B065;
+  border-radius: 6px;
+  border-color: #00B065;
+  font-size: 14px;
+  color: #F9F9F9;
+}
+.btn-primary:disabled {
+ 	color: #fff;
+    background-color: #ff7c70;
+    border-color: #ff7c70;
+}
+
+.btn-primary:hover {
+  background-color: #0864AA;
+  border-color: #0864AA;
+}
+
+.menu {
+  border-radius: 24px;
+  margin: 20px 20px;
+  padding: 50px;
+  -webkit-box-shadow: 0px 0px 15px rgba(54, 54, 54, 0.4);
+          box-shadow: 0px 0px 15px rgba(54, 54, 54, 0.4);
+}
+
+.main {
+  color: #00599C;
+  font-weight: bolder;
+  font-size: 2rem;
+}
+
+.secondary {
+  color: #00599C;
+  font-weight: bolder;
+  font-size: 1rem;
+}
+
+.label {
+  color: #767575;
+  font-weight: bold;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .menu {
+    padding: 20px;
+    border-radius: 24px;
+    margin: 20px 20px;
+  }
+  .main {
+    text-align: center;
+    color: #231F20;
+    font-weight: bolder;
+    font-size: 1.8rem;
+  }
+  .label {
+    color: #231F20;
+    font-weight: bold;
+  }
+}
+
+.row-form {
+  width: 48%;
+}
+
+.hidden {
+  display: none;
+}
+/* SPAN DE ERRORES */
+.errorsp{
+	width: 100%;
+    margin-top: 0.25rem;
+    font-size: .875em;
+    color: #dc3545;
+	
+}
+.classCheckConvenio{
+	 top: 6px;
+}  
+.modal-footer{
+	justify-content: space-around;
+}

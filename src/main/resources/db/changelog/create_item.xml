@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <!-- Refer to https://docs.liquibase.com/change-types/community/create-table.html -->
+
+    <changeSet id="e333c653-6fbc-4e61-975a-2d1b42b9f090" author="juan_esteban.caicedo" failOnError="true">
+        <createTable tableName="items">
+            <column name="item_id" type="UUID">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="url_image" type="varchar(2048)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <insert tableName="items">
+            <column name="item_id" value="b5406782-27d9-4013-8795-a60f6ebf476c"/>
+            <column name="name" value="Gaming PC"/>
+            <column name="description" value="A powerful pc"/>
+            <column name="price" value="2000"/>
+            <column name="url_image" value="https://www.img2link.com/images/2022/12/01/aaf04b258acfc1bf50e03b699b611fa7.jpg"/>
+        </insert>
+        <insert tableName="items">
+            <column name="item_id" value="2f7908f1-c6c5-4fd9-bca9-07332d2c60e6"/>
+            <column name="name" value="Business PC"/>
+            <column name="description" value="A everyday use pc"/>
+            <column name="price" value="1500"/>
+            <column name="url_image" value="https://www.img2link.com/images/2022/12/01/6a7697b54b1b070ba9d64c2e7a276386.jpg"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

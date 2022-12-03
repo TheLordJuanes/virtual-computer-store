@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <!-- Refer to https://docs.liquibase.com/change-types/community/create-table.html -->
+
+    <changeSet id="33d4e9bc-7210-47c3-9617-c56ab7c0750d" author="juan_esteban.caicedo" failOnError="true" >
+        <createTable tableName="users">
+            <column name="user_id" type="uuid">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="email" type="varchar(255)"/>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="phone_number" type="varchar(255)"/>
+            <column name="role_id" type="UUID">
+                <constraints nullable="false" references="roles(role_id)" foreignKeyName="fk-user-role"/>
+            </column>
+        </createTable>
+        <insert tableName="users">
+            <column name="user_id" value="724f2a12-cad4-4e65-8846-9dd94df19369"/>
+            <column name="email" value="juanes.caicedo@icesi.edu.co"/>
+            <column name="password" value="Ju@nes1234"/>
+            <column name="address" value="Calle 45 #34-21"/>
+            <column name="phone_number" value="+573107552187"/>
+            <column name="role_id" value="44c953c9-daf4-45a9-bb41-288fce256c43"/>
+        </insert>
+        <insert tableName="users">
+            <column name="user_id" value="9db26d90-ff5c-477d-bc4b-95cae0363a71"/>
+            <column name="email" value="juan.fernando@icesi.edu.co"/>
+            <column name="password" value="Ju@nes1234"/>
+            <column name="address" value="Calle 45 #34-21"/>
+            <column name="phone_number" value="+573107552186"/>
+            <column name="role_id" value="c7cc9bab-62e1-4be1-98d3-8908a2c1784f"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

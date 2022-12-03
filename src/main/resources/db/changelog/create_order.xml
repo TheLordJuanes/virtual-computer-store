@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <!-- Refer to https://docs.liquibase.com/change-types/community/create-table.html -->
+
+    <changeSet id="5631cbd3-cf53-415f-bd06-4e995ee3c322" author="juan_esteban.caicedo" failOnError="true">
+        <createTable tableName="orders">
+            <column name="order_id" type="UUID" >
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="total" type="double" >
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(255)" >
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="UUID">
+                <constraints nullable="false" references="users(user_id)" foreignKeyName="fk-user"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
