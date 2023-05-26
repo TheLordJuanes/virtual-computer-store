@@ -33,6 +33,9 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(name = "last_login")
+    private String lastLogin;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;

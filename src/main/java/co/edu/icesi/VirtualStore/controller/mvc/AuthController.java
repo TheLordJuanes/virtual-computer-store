@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -33,6 +35,10 @@ public class AuthController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
+        LoggedUserDTO loggedUserDTO = ((LoggedUserDTO) session.getAttribute("LoggedUser"));
+        Optional.ofNullable(loggedUserDTO).ifPresent(user -> {
+            loginService.updateLastLogin(user.getId(), user.getCurrentLogin());
+        });
         session.removeAttribute(HttpHeaders.AUTHORIZATION);
         session.removeAttribute("LoggedUser");
         return "redirect:/signIn";
@@ -56,6 +62,10 @@ public class AuthController {
                 TokenDTO tokenDTO = loginService.login(loginDTO);
                 LoggedUserDTO loggedUserDTO = userMapper.loggedUserFromUser(userService.getUserByEmailOrPhoneNumber(loginDTO.getEmailPhone()));
                 loggedUserDTO.setCart(new CartDTO());
+                LocalDateTime now = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E MMM dd HH:mm:ss yyyy");
+                String formattedDateTime = now.format(formatter);
+                loggedUserDTO.setCurrentLogin(formattedDateTime);
                 HttpSession session = request.getSession();
                 session.setAttribute(HttpHeaders.AUTHORIZATION, "Bearer " + tokenDTO.getToken());
                 session.setAttribute("LoggedUser", loggedUserDTO);

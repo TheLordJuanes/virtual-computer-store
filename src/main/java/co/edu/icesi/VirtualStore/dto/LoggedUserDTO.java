@@ -3,6 +3,7 @@ package co.edu.icesi.VirtualStore.dto;
 import co.edu.icesi.VirtualStore.model.Role;
 import lombok.*;
 
+import javax.persistence.Column;
 import java.util.UUID;
 
 @Data
@@ -20,6 +21,10 @@ public class LoggedUserDTO {
     private String address;
 
     private String phoneNumber;
+
+    private String currentLogin;
+
+    private String lastLogin;
 
     private Role role;
 

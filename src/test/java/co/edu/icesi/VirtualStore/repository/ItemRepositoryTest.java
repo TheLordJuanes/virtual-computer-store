@@ -23,6 +23,7 @@ public class ItemRepositoryTest {
         Item itemCreate = itemsRepository.save(Item.builder().name("Mini PC").description("A mini pc.").price(2000).urlImage("https://www.img2link.com/images/2022/12/01/aaf04b258acfc1bf50e03b699b611fa7.jpg").build());
         itemsRepository.updateItemName(itemCreate.getId(), "Big PC");
         Optional<Item> itemGet = itemsRepository.findById(itemCreate.getId());
+        assertThat(itemGet.isPresent()).isTrue();
         assertThat(itemGet.get().getName()).isEqualTo("Big PC");
     }
 
@@ -31,6 +32,7 @@ public class ItemRepositoryTest {
         Item itemCreate = itemsRepository.save(Item.builder().name("Medium PC").description("A mini pc.").price(1500).urlImage("https://www.img2link.com/images/2022/12/01/aaf04b258acfc1bf50e03b699b611fa7.jpg").build());
         itemsRepository.updateItemDescription(itemCreate.getId(), "A medium pc.");
         Optional<Item> itemGet = itemsRepository.findById(itemCreate.getId());
+        assertThat(itemGet.isPresent()).isTrue();
         assertThat(itemGet.get().getDescription()).isEqualTo("A medium pc.");
     }
 
@@ -39,6 +41,7 @@ public class ItemRepositoryTest {
         Item itemCreate = itemsRepository.save(Item.builder().name("Mini PC").description("A mini pc.").price(1500).urlImage("https://www.img2link.com/images/2022/12/01/aaf04b258acfc1bf50e03b699b611fa7.jpg").build());
         itemsRepository.updateItemPrice(itemCreate.getId(), Double.parseDouble("1000"));
         Optional<Item> itemGet = itemsRepository.findById(itemCreate.getId());
+        assertThat(itemGet.isPresent()).isTrue();
         assertThat(itemGet.get().getPrice()).isEqualTo(1000);
     }
 }

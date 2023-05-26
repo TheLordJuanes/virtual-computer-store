@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.StreamSupport;
 
 @AllArgsConstructor
@@ -31,5 +32,10 @@ public class LoginServiceImpl implements LoginService {
             return new TokenDTO(JWTParser.createJWT(user.getId().toString(), user.getEmail(), user.getEmail(), claims,300000000000L));
         }
         throw new UserException(HttpStatus.BAD_REQUEST, new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage()));
+    }
+
+    @Override
+    public void updateLastLogin(UUID userId, String lastLogin) {
+        userRepository.updateLastLogin(userId, lastLogin);
     }
 }

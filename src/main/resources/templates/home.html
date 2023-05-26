@@ -28,6 +28,22 @@
             </div>
         </div>
     </nav>
+    <br>
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <h1 class="text-center">Welcome to the Computer Store</h1>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center" th:if="${role.equals('Basic')}">
+                        <br>
+                        <h3 class="text-center" th:text="'Last login: ' + ${lastLogin}"></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <section class="d-flex justify-content-center align-items-center bg" th:each="item, i: ${items}">
         <div hidden>
             <input type="hidden" class="size" th:value="${i.size}"/>

@@ -16,5 +16,7 @@ public interface UserService {
 
     List<User> getUsers();
 
+    void deleteUser(@PathVariable UUID userId);
+
     void makeAdmin(UUID userId);
 }

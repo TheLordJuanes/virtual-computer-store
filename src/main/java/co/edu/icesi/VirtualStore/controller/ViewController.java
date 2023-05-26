@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,7 @@ public class ViewController {
         HttpSession session = request.getSession();
         model.addAttribute("role", session.getAttribute("role").toString());
         model.addAttribute("items", itemsService.getItems().stream().map(itemMapper::cartItemfromItem).collect(Collectors.toList()));
+        model.addAttribute("lastLogin", ((LoggedUserDTO) session.getAttribute("LoggedUser")).getLastLogin());
         return "home";
     }
 
@@ -59,6 +62,16 @@ public class ViewController {
         HttpSession session = request.getSession();
         if (((LoggedUserDTO) session.getAttribute("LoggedUser")).getRole().getName().equals("Admin")) {
             userService.makeAdmin(userId);
+            return "redirect:/getUsers";
+        }
+        return "redirect:/home";
+    }
+
+    @PostMapping("/deleteUser")
+    public String deleteUser(@RequestParam("id") UUID userId, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (((LoggedUserDTO) session.getAttribute("LoggedUser")).getRole().getName().equals("Admin")) {
+            userService.deleteUser(userId);
             return "redirect:/getUsers";
         }
         return "redirect:/home";

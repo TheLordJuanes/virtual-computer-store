@@ -17,6 +17,9 @@
                 <constraints nullable="true"/>
             </column>
             <column name="phone_number" type="varchar(255)"/>
+            <column name="last_login" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
             <column name="role_id" type="UUID">
                 <constraints nullable="false" references="roles(role_id)" foreignKeyName="fk-user-role"/>
             </column>
@@ -32,9 +35,10 @@
         <insert tableName="users">
             <column name="user_id" value="9db26d90-ff5c-477d-bc4b-95cae0363a71"/>
             <column name="email" value="juan.fernando@icesi.edu.co"/>
-            <column name="password" value="Ju@nes1234"/>
+            <column name="password" value="Fern@ndo1234"/>
             <column name="address" value="Calle 45 #34-21"/>
             <column name="phone_number" value="+573107552186"/>
+            <column name="last_login" value="Fri May 26 15:17:19 2023"/>
             <column name="role_id" value="c7cc9bab-62e1-4be1-98d3-8908a2c1784f"/>
         </insert>
     </changeSet>

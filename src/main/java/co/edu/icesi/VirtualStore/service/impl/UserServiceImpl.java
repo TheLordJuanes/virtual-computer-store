@@ -45,6 +45,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void deleteUser(UUID userId) {
+        userRepository.deleteById(userId);
+    }
+
+    @Override
     public void makeAdmin(UUID userId){
         userRepository.updateUserToAdmin(userId);
     }
