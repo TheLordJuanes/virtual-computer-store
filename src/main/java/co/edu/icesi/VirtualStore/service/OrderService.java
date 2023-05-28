@@ -17,5 +17,4 @@ public interface OrderService {
     void removeOrder(UUID orderId);
 
     void modifyStatus(UUID orderId, String status);
-
 }

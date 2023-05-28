@@ -26,4 +26,9 @@ public interface UserRepository extends CrudRepository<User, UUID> {
     @Modifying
     @Query(value = "UPDATE users SET last_login = ?2 WHERE user_id = ?1", nativeQuery = true)
     void updateLastLogin(UUID userId, String lastLogin);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE users SET password = ?2 WHERE user_id = ?1", nativeQuery = true)
+    void updatePassword(UUID userId, String newPassword);
 }

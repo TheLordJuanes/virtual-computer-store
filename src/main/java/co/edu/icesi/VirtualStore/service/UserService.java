@@ -19,4 +19,6 @@ public interface UserService {
     void deleteUser(@PathVariable UUID userId);
 
     void makeAdmin(UUID userId);
+
+    void updateUserPassword(UUID id, String newPassword);
 }

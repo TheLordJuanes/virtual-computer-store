@@ -37,7 +37,8 @@ public class AuthController {
         HttpSession session = request.getSession();
         LoggedUserDTO loggedUserDTO = ((LoggedUserDTO) session.getAttribute("LoggedUser"));
         Optional.ofNullable(loggedUserDTO).ifPresent(user -> {
-            loginService.updateLastLogin(user.getId(), user.getCurrentLogin());
+            if (user.getRole().getName().equals("Basic"))
+                loginService.updateLastLogin(user.getId(), user.getCurrentLogin());
         });
         session.removeAttribute(HttpHeaders.AUTHORIZATION);
         session.removeAttribute("LoggedUser");
@@ -57,7 +58,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String login(@Valid @ModelAttribute LoginDTO loginDTO, BindingResult errors, Model model, HttpServletRequest request) {
-        if (hasBindingErrors(errors, model, "loginResponse")) {
+        if (hasNotBindingErrors(errors, model, "loginResponse")) {
             try {
                 TokenDTO tokenDTO = loginService.login(loginDTO);
                 LoggedUserDTO loggedUserDTO = userMapper.loggedUserFromUser(userService.getUserByEmailOrPhoneNumber(loginDTO.getEmailPhone()));
@@ -92,7 +93,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public String createUser(@Valid @ModelAttribute UserDTO userDTO, BindingResult errors, Model model) {
-        if (hasBindingErrors(errors, model, "userResponse")) {
+        if (hasNotBindingErrors(errors, model, "userResponse")) {
             try {
                 validateEmptyIdentifiers(userDTO);
                 userService.createUser(userMapper.fromDTO(userDTO));
@@ -110,7 +111,7 @@ public class AuthController {
             throw new UserException(HttpStatus.BAD_REQUEST, new UserError(UserErrorCode.CODE_02, UserErrorCode.CODE_02.getMessage()));
     }
 
-    private boolean hasBindingErrors(BindingResult errors, Model model, String attributeName) {
+    private boolean hasNotBindingErrors(BindingResult errors, Model model, String attributeName) {
         if (errors.hasErrors()) {
             model.addAttribute(attributeName, false);
             model.addAttribute("message", Objects.requireNonNull(errors.getFieldError()).getDefaultMessage());

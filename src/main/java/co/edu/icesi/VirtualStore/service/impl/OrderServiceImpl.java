@@ -31,13 +31,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void removeOrder(UUID orderId) {
-        if(orderRepository.findById(orderId).orElse(Order.builder().status("NOT EXISTS").build()).getStatus().equals("CREATED")) {
-            orderRepository.deleteById(orderId);
-        }
+        orderRepository.findById(orderId).ifPresent(orderRepository::delete);
     }
 
     @Override
-    public List<Order> getOrders(){
+    public List<Order> getOrders() {
         return StreamSupport.stream(orderRepository.findAll().spliterator(),false).collect(Collectors.toList());
     }
 

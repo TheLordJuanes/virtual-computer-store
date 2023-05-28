@@ -20,5 +20,4 @@ public interface OrderRepository extends CrudRepository<Order, UUID> {
     @Modifying
     @Query(value = "UPDATE orders SET status = ?2 WHERE order_id = ?1", nativeQuery = true)
     void updateStatus(UUID orderId, String status);
-    
 }

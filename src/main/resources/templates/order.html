@@ -18,8 +18,9 @@
       <a class="navbar-brand" href="./home" style="color: white">Computer Store</a>
       <div class="navbar-nav">
         <a class="nav-link" href="./home" style="color: white">Home</a>
-        <a class="nav-link" href="./getOrders" style="color: white">Orders</a>
-        <a class="nav-link" href="./getCart" style="color: white">Cart</a>
+        <a class="nav-link" href="./getUsers" style="color: white" th:if="${role.equals('Admin')}">Users</a>
+        <a class="nav-link" href="./getCart" style="color: white" th:if="${role.equals('Basic')}">Cart</a>
+        <a class="nav-link" href="./getProfile" style="color: white" th:if="${role.equals('Basic')}">Profile</a>
         <a>&nbsp;</a>
         <button onclick="window.location.href='/logout'" th:class="'btn btn-danger'">Logout</button>
       </div>
@@ -28,7 +29,7 @@
   <section class="d-flex justify-content-center align-items-center bg" th:each="order, i: ${orders}">
     <div class="card menu">
       <div class="d-flex flex-column p-3">
-        <h2 class="card-title main" th:text="'Order #' + ${i.count}"></h2>
+        <h2 class="card-title main" th:text="'Order #' + ${i.count}" style="text-align: center"></h2>
         <div class="menu__container">
           <div class="container">
             <form th:action="@{${role.equals('Admin') ? '/modifyStatus' : '/removeOrder'}}" th:method="post">

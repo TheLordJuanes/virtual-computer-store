@@ -9,7 +9,6 @@ import org.mapstruct.Mapper;
 public interface ItemMapper {
 
     Item fromDTO(ItemDTO itemDTO);
-    ItemDTO fromItem(Item item);
 
     CartItemDTO cartItemfromItem(Item item);
 

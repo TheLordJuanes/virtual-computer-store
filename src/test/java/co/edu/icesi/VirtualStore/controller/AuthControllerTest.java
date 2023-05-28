@@ -16,10 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Objects;
 import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -72,7 +70,7 @@ public class AuthControllerTest {
     @Test
     public void testSignInWithUserLogged() {
         when(httpServletRequest.getSession()).thenReturn(httpSession);
-        when(httpSession.getAttribute(any())).thenReturn(new LoggedUserDTO(UUID.fromString("35a81e7d-342b-48e2-89e3-cccbb6e09f25"), "juan1234@icesi.edu.co", "Ju@nes1234", "Calle 34 #12-21", "+571234567890", new Role(), new CartDTO()));
+        when(httpSession.getAttribute(any())).thenReturn(new LoggedUserDTO(UUID.fromString("35a81e7d-342b-48e2-89e3-cccbb6e09f25"), "juan1234@icesi.edu.co", "Ju@nes1234", "Calle 34 #12-21", "+571234567890", "", "", new Role(), new CartDTO()));
         when(model.addAttribute(any(), any())).thenReturn(model);
         assertEquals("redirect:/home", authController.signIn(model, httpServletRequest));
         verify(httpServletRequest, times(1)).getSession();
@@ -84,8 +82,8 @@ public class AuthControllerTest {
     public void testLoginWithoutBindingErrorsSuccessfully() {
         when(bindingResult.hasErrors()).thenReturn(false);
         when(model.addAttribute(any(), any())).thenReturn(model);
-        when(userMapper.loggedUserFromUser(any())).thenReturn(new LoggedUserDTO(null, "juanes1234@icesi.edu.co", "Ju@nes1234", "Calle 34 #12-21", "+571234567891", new Role(), new CartDTO()));
-        when(userService.getUserByEmailOrPhoneNumber(any())).thenReturn(new User(UUID.fromString("35a81e7d-342b-48e2-89e3-cccbb6e09f25"), "juanes1234@icesi.edu.co", "Ju@nes1234", "Calle 34 #12-21", "+571234567891", new Role()));
+        when(userMapper.loggedUserFromUser(any())).thenReturn(new LoggedUserDTO(null, "juanes1234@icesi.edu.co", "Ju@nes1234", "Calle 34 #12-21", "+571234567891", "", "", new Role(), new CartDTO()));
+        when(userService.getUserByEmailOrPhoneNumber(any())).thenReturn(new User(UUID.fromString("35a81e7d-342b-48e2-89e3-cccbb6e09f25"), "juanes1234@icesi.edu.co", "Ju@nes1234", "Calle 34 #12-21", "+571234567891", "", new Role()));
         when(httpServletRequest.getSession()).thenReturn(httpSession);
         doNothing().when(httpSession).setAttribute(any(), any());
         when(loginService.login(any())).thenReturn(new TokenDTO("35a81e7d-342b-48e2-89e3-cccbb6e09f25"));
@@ -136,7 +134,7 @@ public class AuthControllerTest {
     @Test
     public void testSignUpWithUserLogged() {
         when(httpServletRequest.getSession()).thenReturn(httpSession);
-        when(httpSession.getAttribute(any())).thenReturn(new LoggedUserDTO(UUID.fromString("35a81e7d-342b-48e2-89e3-cccbb6e09f25"), "juan1234@icesi.edu.co", "Ju@nes1234", "Calle 34 #12-21", "+571234567890", new Role(), new CartDTO()));
+        when(httpSession.getAttribute(any())).thenReturn(new LoggedUserDTO(UUID.fromString("35a81e7d-342b-48e2-89e3-cccbb6e09f25"), "juan1234@icesi.edu.co", "Ju@nes1234", "Calle 34 #12-21", "+571234567890", "", "", new Role(), new CartDTO()));
         when(model.addAttribute(any(), any())).thenReturn(model);
         assertEquals("redirect:/home", authController.signUp(model, httpServletRequest));
         verify(httpServletRequest, times(1)).getSession();

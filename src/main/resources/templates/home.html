@@ -20,7 +20,8 @@
                 <a class="nav-link" href="./home" style="color: white">Home</a>
                 <a class="nav-link" href="./getUsers" style="color: white" th:if="${role.equals('Admin')}">Users</a>
                 <a class="nav-link" href="./getOrders" style="color: white">Orders</a>
-                <a class="nav-link" href="./getCart" style="color: white" th:if="${!role.equals('Admin')}">Cart</a>
+                <a class="nav-link" href="./getCart" style="color: white" th:if="${role.equals('Basic')}">Cart</a>
+                <a class="nav-link" href="./getProfile" style="color: white" th:if="${role.equals('Basic')}">Profile</a>
                 <a>&nbsp;</a>
                 <button onclick="window.location.href='/createNewItem'" th:class="'btn btn-success'" th:if="${role.equals('Admin')}">Create Item</button>
                 <a th:if="${role.equals('Admin')}">&nbsp;&nbsp;&nbsp;</a>
@@ -50,7 +51,7 @@
         </div>
         <div class="card menu">
             <div class="d-flex flex-column p-3">
-                <h2 class="card-title main" th:text="${item.name}"></h2>
+                <h2 class="card-title main" th:text="${item.name}" style="text-align: center"></h2>
                 <div class="menu__container">
                     <div class="container">
                         <form th:action="@{/addCartItem}" th:method="post" th:class="'home-'+${i.count}">

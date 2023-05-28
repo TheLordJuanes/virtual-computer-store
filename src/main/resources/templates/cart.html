@@ -19,6 +19,7 @@
       <div class="navbar-nav">
         <a class="nav-link" href="./home" style="color: white">Home</a>
         <a class="nav-link" href="./getOrders" style="color: white">Orders</a>
+        <a class="nav-link" href="./getProfile" style="color: white">Profile</a>
         <a>&nbsp;</a>
         <button onclick="window.location.href='/createOrder'" th:class="'btn btn-success'">Create Order</button>
         <a>&nbsp;&nbsp;&nbsp;</a>
@@ -29,7 +30,7 @@
   <section class="d-flex justify-content-center align-items-center bg" th:each="item: ${items}">
     <div class="card menu">
       <div class="d-flex flex-column p-3">
-        <h2 class="card-title main" th:text="${item.name}"></h2>
+        <h2 class="card-title main" th:text="${item.name}" style="text-align: center"></h2>
         <div class="menu__container">
           <div class="container">
             <form th:action="@{/removeItem}" th:method="post">

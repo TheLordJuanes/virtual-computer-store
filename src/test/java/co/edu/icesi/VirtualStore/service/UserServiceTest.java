@@ -33,7 +33,7 @@ public class UserServiceTest {
         RoleRepository roleRepository = mock(RoleRepository.class);
         userService = new UserServiceImpl(roleRepository,userRepository);
 
-        testUser = new User(testUserUUID,"test@icesi.edu.co","Qwerty123#","C14","+573161234567",null);
+        testUser = new User(testUserUUID,"test@icesi.edu.co","Qwerty123#","C14","+573161234567","",null);
 
     }
 

@@ -44,7 +44,7 @@ public class OrderServiceTest {
         orderRepository = mock(OrderRepository.class);
         orderService = new OrderServiceImpl(orderRepository);
 
-        testUser = new User(testUserUUID,"test@icesi.edu.co","Qwerty123#","C14","+573161234567",null);
+        testUser = new User(testUserUUID,"test@icesi.edu.co","Qwerty123#","C14","+573161234567","",null);
 
     }
 

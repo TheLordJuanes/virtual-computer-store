@@ -2,7 +2,6 @@ package co.edu.icesi.VirtualStore.controller;
 
 import co.edu.icesi.VirtualStore.dto.CartDTO;
 import co.edu.icesi.VirtualStore.dto.CartItemDTO;
-import co.edu.icesi.VirtualStore.dto.ItemDTO;
 import co.edu.icesi.VirtualStore.dto.LoggedUserDTO;
 import co.edu.icesi.VirtualStore.mapper.ItemMapper;
 import co.edu.icesi.VirtualStore.mapper.UserMapper;
@@ -16,19 +15,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -46,8 +39,9 @@ public class ViewControllerTest {
     private Model model;
     private HttpServletRequest httpServletRequest;
     private HttpSession httpSession;
+    private RedirectAttributes redirectAttributes;
 
-    private UUID loggedUserId = UUID.fromString("1887fcda-c227-400b-ad7c-541802a92d49");
+    private final UUID loggedUserId = UUID.fromString("1887fcda-c227-400b-ad7c-541802a92d49");
 
     private LoggedUserDTO testLoggedUserDTO;
 
@@ -61,7 +55,8 @@ public class ViewControllerTest {
         model = mock(Model.class);
         httpServletRequest = mock(HttpServletRequest.class);
         httpSession = mock(HttpSession.class);
-        viewController = new ViewController(userService, itemsService, userMapper, itemMapper, orderService);
+        redirectAttributes = mock(RedirectAttributes.class);
+        viewController = new ViewController(userService, itemsService, orderService, userMapper, itemMapper);
 
         testLoggedUserDTO = LoggedUserDTO.builder().cart(new CartDTO()).id(loggedUserId).build();
         when(httpServletRequest.getSession()).thenReturn(httpSession);
@@ -99,7 +94,7 @@ public class ViewControllerTest {
         when(httpSession.getAttribute("LoggedUser")).thenReturn(testLoggedUserDTO);
         when(userService.getUsers()).thenReturn(Collections.singletonList(userMapper.fromLoggedUserDTO(testLoggedUserDTO)));
 
-        assertEquals("getUsers", viewController.getUsers(model, httpServletRequest));
+        assertEquals("getUsers", viewController.getUsers(model, httpServletRequest, redirectAttributes));
         verify(httpServletRequest, times(1)).getSession();
         verify(model,times(1)).addAttribute(any(),any());
     }
@@ -110,7 +105,7 @@ public class ViewControllerTest {
         when(httpSession.getAttribute("LoggedUser")).thenReturn(testLoggedUserDTO);
         when(userService.getUsers()).thenReturn(Collections.singletonList(userMapper.fromLoggedUserDTO(testLoggedUserDTO)));
 
-        assertEquals("redirect:/home", viewController.getUsers(model, httpServletRequest));
+        assertEquals("redirect:/home", viewController.getUsers(model, httpServletRequest, redirectAttributes));
         verify(httpServletRequest, times(1)).getSession();
         verify(model,times(0)).addAttribute(any());
     }
@@ -120,7 +115,6 @@ public class ViewControllerTest {
     void testGetCart(){
         CartItemDTO cartItemDTO = new CartItemDTO();
         cartItemDTO.setId(UUID.fromString("86ee5179-167a-4b99-a7fa-56a9349d41bc"));
-        UUID cartItemDTOId = cartItemDTO.getId();
 
         testLoggedUserDTO.getCart().getItems().add(cartItemDTO);
 
@@ -136,7 +130,6 @@ public class ViewControllerTest {
     void testRemoveCartItem(){
         CartItemDTO cartItemDTO = new CartItemDTO();
         cartItemDTO.setId(UUID.fromString("86ee5179-167a-4b99-a7fa-56a9349d41bc"));
-        UUID cartItemDTOId = cartItemDTO.getId();
 
         testLoggedUserDTO.getCart().getItems().add(cartItemDTO);
 
@@ -149,7 +142,7 @@ public class ViewControllerTest {
     @Test
     void testRemoveOrder(){
         doNothing().when(orderService).removeOrder(ArgumentMatchers.any());
-        assertEquals("redirect:/getOrders", viewController.removeOrder(new Order()));
+        assertEquals("redirect:/getOrders", viewController.removeOrder(new Order(), httpServletRequest));
     }
 
     @Test
@@ -157,7 +150,6 @@ public class ViewControllerTest {
 
         CartItemDTO cartItemDTO = new CartItemDTO();
         cartItemDTO.setId(UUID.fromString("86ee5179-167a-4b99-a7fa-56a9349d41bc"));
-        UUID cartItemDTOId = cartItemDTO.getId();
 
         doNothing().when(orderService).createOrder(ArgumentMatchers.any(),ArgumentMatchers.any());
         when(httpSession.getAttribute("LoggedUser")).thenReturn(testLoggedUserDTO);

@@ -41,7 +41,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsers() {
-        return StreamSupport.stream(userRepository.findAll().spliterator(),false).collect(Collectors.toList());
+        List<User> users = StreamSupport.stream(userRepository.findAll().spliterator(),false).collect(Collectors.toList());
+        users.forEach(user -> user.setPassword(""));
+        return users;
     }
 
     @Override
@@ -54,8 +56,13 @@ public class UserServiceImpl implements UserService {
         userRepository.updateUserToAdmin(userId);
     }
 
+    @Override
+    public void updateUserPassword(UUID id, String newPassword) {
+        userRepository.updatePassword(id, newPassword);
+    }
+
     private void validateUserExists(String email, String phoneNumber) {
-        if(userRepository.findByEmail(email).isPresent() || userRepository.findByPhoneNumber(phoneNumber).isPresent())
+        if (userRepository.findByEmail(email).isPresent() || userRepository.findByPhoneNumber(phoneNumber).isPresent())
             throw new UserException(HttpStatus.BAD_REQUEST, new UserError(UserErrorCode.CODE_05, UserErrorCode.CODE_05.getMessage()));
     }
 }
