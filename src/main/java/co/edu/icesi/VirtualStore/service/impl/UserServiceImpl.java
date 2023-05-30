@@ -7,6 +7,7 @@ import co.edu.icesi.VirtualStore.model.User;
 import co.edu.icesi.VirtualStore.repository.RoleRepository;
 import co.edu.icesi.VirtualStore.repository.UserRepository;
 import co.edu.icesi.VirtualStore.service.UserService;
+import co.edu.icesi.VirtualStore.service.utils.Encoder;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import org.apache.commons.codec.binary.Hex;
 
 @AllArgsConstructor
 @Service
@@ -21,7 +23,6 @@ public class UserServiceImpl implements UserService {
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-
     @Override
     public User getUser(UUID userId) {
         return userRepository.findById(userId).orElseThrow(() -> new UserException(HttpStatus.BAD_REQUEST, new UserError(UserErrorCode.CODE_01, UserErrorCode.CODE_01.getMessage())));
@@ -36,6 +37,11 @@ public class UserServiceImpl implements UserService {
     public User createUser(User user) {
         validateUserExists(user.getEmail(), user.getPhoneNumber());
         user.setRole(roleRepository.getBasicUserRole());
+        UUID randomUUID = UUID.randomUUID();
+        user.setId(randomUUID);
+        byte[] hashedBytes = Encoder.hashPassword(user.getPassword().toCharArray(), randomUUID.toString().getBytes());
+        String hashedString = Hex.encodeHexString(hashedBytes);
+        user.setPassword(hashedString);
         return userRepository.save(user);
     }
 

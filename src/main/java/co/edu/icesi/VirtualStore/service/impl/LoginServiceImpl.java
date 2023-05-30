@@ -8,8 +8,10 @@ import co.edu.icesi.VirtualStore.error.exception.UserException;
 import co.edu.icesi.VirtualStore.model.User;
 import co.edu.icesi.VirtualStore.repository.UserRepository;
 import co.edu.icesi.VirtualStore.service.LoginService;
+import co.edu.icesi.VirtualStore.service.utils.Encoder;
 import co.edu.icesi.VirtualStore.utils.JWTParser;
 import lombok.AllArgsConstructor;
+import org.apache.commons.codec.binary.Hex;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
@@ -26,6 +28,9 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public TokenDTO login(LoginDTO loginDTO) {
         User user = StreamSupport.stream(userRepository.findAll().spliterator(),false).filter(user1 -> user1.getEmail().equals(loginDTO.getEmailPhone())|| user1.getPhoneNumber().equals((loginDTO.getEmailPhone()))).findFirst().orElseThrow(() -> new UserException(HttpStatus.BAD_REQUEST, new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage())));
+        byte[] hashedBytes = Encoder.hashPassword(loginDTO.getPassword().toCharArray(), user.getId().toString().getBytes());
+        String hashedString = Hex.encodeHexString(hashedBytes);
+        loginDTO.setPassword(hashedString);
         if (user.getPassword().equals(loginDTO.getPassword())) {
             Map<String, String> claims = new HashMap<>();
             claims.put("userId", user.getId().toString());

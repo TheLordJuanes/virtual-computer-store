@@ -39,9 +39,4 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
-
-    @PrePersist
-    public void generateId(){
-        this.id = UUID.randomUUID();
-    }
 }
