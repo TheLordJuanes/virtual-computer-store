@@ -19,7 +19,7 @@
                 <h2 class="card-title main" th:align="center">Sign In</h2>
                 <div class="menu__container">
                     <div class="container">
-                        <form th:action="@{/login}" th:object="${loginDTO}" th:method="get">
+                        <form th:action="@{/login}" th:object="${loginDTO}" th:method="post">
                             <div th:class="'form-group p-2'">
                                 <label for="emailPhoneInput">Email/Phone: </label>
                                 <input th:type="text" th:class="'form-control'" th:size="30" id="emailPhoneInput" th:placeholder="'Enter your email or phone number'" th:field="*{emailPhone}" required/>

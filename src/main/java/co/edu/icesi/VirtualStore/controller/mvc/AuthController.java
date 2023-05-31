@@ -56,7 +56,7 @@ public class AuthController {
         return "redirect:/home";
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public String login(@Valid @ModelAttribute LoginDTO loginDTO, BindingResult errors, Model model, HttpServletRequest request) {
         if (hasNotBindingErrors(errors, model, "loginResponse")) {
             try {

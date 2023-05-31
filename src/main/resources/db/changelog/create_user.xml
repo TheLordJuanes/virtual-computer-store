@@ -24,22 +24,5 @@
                 <constraints nullable="false" references="roles(role_id)" foreignKeyName="fk-user-role"/>
             </column>
         </createTable>
-        <insert tableName="users">
-            <column name="user_id" value="724f2a12-cad4-4e65-8846-9dd94df19369"/>
-            <column name="email" value="juanes.caicedo@icesi.edu.co"/>
-            <column name="password" value="Ju@nes1234"/>
-            <column name="address" value="Calle 45 #34-21"/>
-            <column name="phone_number" value="+573107552187"/>
-            <column name="role_id" value="44c953c9-daf4-45a9-bb41-288fce256c43"/>
-        </insert>
-        <insert tableName="users">
-            <column name="user_id" value="9db26d90-ff5c-477d-bc4b-95cae0363a71"/>
-            <column name="email" value="juan.fernando@icesi.edu.co"/>
-            <column name="password" value="Fern@ndo1234"/>
-            <column name="address" value="Calle 45 #34-21"/>
-            <column name="phone_number" value="+573107552186"/>
-            <column name="last_login" value="Fri May 26 15:17:19 2023"/>
-            <column name="role_id" value="c7cc9bab-62e1-4be1-98d3-8908a2c1784f"/>
-        </insert>
     </changeSet>
 </databaseChangeLog>
