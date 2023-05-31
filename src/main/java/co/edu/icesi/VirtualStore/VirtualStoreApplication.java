@@ -37,18 +37,14 @@ public class VirtualStoreApplication {
 				.address("Calle 45 #34-21")
 				.phoneNumber("+573107552187")
 				.role(adminRole).build();
-		byte[] hashedBytes = Encoder.hashPassword(userAdmin.getPassword().toCharArray(), userAdmin.getId().toString().getBytes());
-		String hashedString = Hex.encodeHexString(hashedBytes);
-		userAdmin.setPassword(hashedString);
+		userAdmin.setPassword(Encoder.hashPassword(userAdmin.getPassword().toCharArray(), userAdmin.getId().toString().getBytes()));
 		User userBasic = User.builder().id(UUID.fromString("9db26d90-ff5c-477d-bc4b-95cae0363a71"))
 				.email("juan.fernando@icesi.edu.co")
 				.password("Fern@ndo1234")
 				.address("Calle 87 #91-19")
 				.phoneNumber("+573128492745")
 				.role(basicRole).build();
-		hashedBytes = Encoder.hashPassword(userBasic.getPassword().toCharArray(), userBasic.getId().toString().getBytes());
-		hashedString = Hex.encodeHexString(hashedBytes);
-		userBasic.setPassword(hashedString);
+		userBasic.setPassword(Encoder.hashPassword(userBasic.getPassword().toCharArray(), userBasic.getId().toString().getBytes()));
 
 		return args -> {
 			roleRepository.save(adminRole);

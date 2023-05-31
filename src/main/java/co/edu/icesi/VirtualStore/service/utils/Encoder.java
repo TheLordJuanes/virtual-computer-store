@@ -1,6 +1,7 @@
 package co.edu.icesi.VirtualStore.service.utils;
 
 
+import org.apache.commons.codec.binary.Hex;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -12,13 +13,13 @@ public class Encoder {
 
     public static final int iterations = 10000;
     public static final int keyLength = 512;
-    public static byte[] hashPassword( final char[] password, final byte[] salt ) {
+    public static String hashPassword( final char[] password, final byte[] salt ) {
 
         try {
             SecretKeyFactory skf = SecretKeyFactory.getInstance( "PBKDF2WithHmacSHA512" );
             PBEKeySpec spec = new PBEKeySpec( password, salt, iterations, keyLength );
             SecretKey key = skf.generateSecret( spec );
-            return key.getEncoded( );
+            return Hex.encodeHexString(key.getEncoded( ));
         } catch ( NoSuchAlgorithmException | InvalidKeySpecException e ) {
             throw new RuntimeException( e );
         }

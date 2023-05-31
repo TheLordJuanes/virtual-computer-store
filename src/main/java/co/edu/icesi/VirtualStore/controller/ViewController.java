@@ -6,6 +6,7 @@ import co.edu.icesi.VirtualStore.mapper.UserMapper;
 import co.edu.icesi.VirtualStore.model.Order;
 import co.edu.icesi.VirtualStore.model.User;
 import co.edu.icesi.VirtualStore.service.*;
+import co.edu.icesi.VirtualStore.service.utils.Encoder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -106,7 +107,8 @@ public class ViewController {
         HttpSession session = request.getSession();
         if (((LoggedUserDTO) session.getAttribute("LoggedUser")).getRole().getName().equals("Admin")) {
             if (user.getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#$%@]).+$")) {
-                if (!user.getPassword().equals(userService.getUser(id).getPassword())) {
+                String currentPassword = Encoder.hashPassword(user.getPassword().toCharArray(), id.toString().getBytes());
+                if (!currentPassword.equals(userService.getUser(id).getPassword())) {
                     userService.updateUserPassword(id, user.getPassword());
                     redirectAttributes.addFlashAttribute("passwordResponse", true);
                 } else {
@@ -212,6 +214,7 @@ public class ViewController {
     public String updateUserPassword(@RequestParam("currentPassword") String currentPassword, @RequestParam("newPassword") String newPassword, @RequestParam("confirmPassword") String confirmPassword, Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         LoggedUserDTO loggedUserDTO = ((LoggedUserDTO) session.getAttribute("LoggedUser"));
+        currentPassword = Encoder.hashPassword(currentPassword.toCharArray(), loggedUserDTO.getId().toString().getBytes());
         if (loggedUserDTO.getRole().getName().equals("Basic")) {
             if (currentPassword.equals(loggedUserDTO.getPassword())) {
                 if (newPassword.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#$%@]).+$")) {

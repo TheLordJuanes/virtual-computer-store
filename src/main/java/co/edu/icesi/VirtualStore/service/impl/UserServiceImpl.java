@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import org.apache.commons.codec.binary.Hex;
 
 @AllArgsConstructor
 @Service
@@ -39,9 +38,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(roleRepository.getBasicUserRole());
         UUID randomUUID = UUID.randomUUID();
         user.setId(randomUUID);
-        byte[] hashedBytes = Encoder.hashPassword(user.getPassword().toCharArray(), randomUUID.toString().getBytes());
-        String hashedString = Hex.encodeHexString(hashedBytes);
-        user.setPassword(hashedString);
+        user.setPassword(Encoder.hashPassword(user.getPassword().toCharArray(), randomUUID.toString().getBytes()));
         return userRepository.save(user);
     }
 
@@ -64,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserPassword(UUID id, String newPassword) {
-        userRepository.updatePassword(id, newPassword);
+        userRepository.updatePassword(id, Encoder.hashPassword(newPassword.toCharArray(), id.toString().getBytes()));
     }
 
     private void validateUserExists(String email, String phoneNumber) {
