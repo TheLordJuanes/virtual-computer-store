@@ -52,6 +52,8 @@ public class JWTAuthorizationTokenFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String TOKEN_PREFIX = "Bearer ";
     private static final String USER_ID_CLAIM_NAME = "userId";
+    private static final String ROLE_CLAIM_NAME = "role";
+    private static final String CART_ID_CLAIM_NAME = "cartId";
     private static final String[] excludedPaths = {"POST /signIn", "GET /signIn", "POST /login", "GET /signUp", "POST /register", "GET /logout"};
 
     @Override
@@ -69,7 +71,6 @@ public class JWTAuthorizationTokenFilter extends OncePerRequestFilter {
             createUnauthorizedFilter(new UserException(HttpStatus.UNAUTHORIZED, new UserError(UserErrorCode.CODE_07, UserErrorCode.CODE_07.getMessage())), response);
         } finally {
             request.removeAttribute("LoggedUser");
-            SecurityContextHolder.clearContext();
         }
     }
 
@@ -85,19 +86,23 @@ public class JWTAuthorizationTokenFilter extends OncePerRequestFilter {
     }
 
     private SecurityContext parseClaims(String jwtToken, Claims claims) {
-        String userId = claimKey(claims);
+        String userId = claimKey(claims, JWTAuthorizationTokenFilter.USER_ID_CLAIM_NAME);
+        String role = claimKey(claims, JWTAuthorizationTokenFilter.ROLE_CLAIM_NAME);
+        String cartId = claimKey(claims, JWTAuthorizationTokenFilter.CART_ID_CLAIM_NAME);
         SecurityContext context = new SecurityContext();
         try {
             context.setUserId(UUID.fromString(userId));
             context.setToken(jwtToken);
+            context.setRole(role);
+            context.setCartId(UUID.fromString(cartId));
         } catch (IllegalArgumentException e) {
             throw new MalformedJwtException("Error parsing jwt");
         }
         return context;
     }
 
-    private String claimKey(Claims claims) {
-        String value = (String) claims.get(JWTAuthorizationTokenFilter.USER_ID_CLAIM_NAME);
+    private String claimKey(Claims claims, String key) {
+        String value = (String) claims.get(key);
         return Optional.ofNullable(value).orElseThrow();
     }
 

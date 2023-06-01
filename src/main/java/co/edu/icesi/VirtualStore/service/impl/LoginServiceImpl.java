@@ -1,6 +1,7 @@
 package co.edu.icesi.VirtualStore.service.impl;
 
 import co.edu.icesi.VirtualStore.constant.UserErrorCode;
+import co.edu.icesi.VirtualStore.dto.CartDTO;
 import co.edu.icesi.VirtualStore.dto.LoginDTO;
 import co.edu.icesi.VirtualStore.dto.TokenDTO;
 import co.edu.icesi.VirtualStore.error.exception.UserError;
@@ -31,6 +32,8 @@ public class LoginServiceImpl implements LoginService {
         if (user.getPassword().equals(loginDTO.getPassword())) {
             Map<String, String> claims = new HashMap<>();
             claims.put("userId", user.getId().toString());
+            claims.put("role", user.getRole().getName());
+            claims.put("cartId", new CartDTO().getId().toString());
             return new TokenDTO(JWTParser.createJWT(user.getId().toString(), user.getEmail(), user.getEmail(), claims,300000000000L));
         }
         throw new UserException(HttpStatus.BAD_REQUEST, new UserError(UserErrorCode.CODE_03, UserErrorCode.CODE_03.getMessage()));
